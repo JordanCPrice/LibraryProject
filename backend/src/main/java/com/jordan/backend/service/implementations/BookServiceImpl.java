@@ -99,7 +99,7 @@ public class BookServiceImpl implements BookService {
        User user = userService.getById(userId);
 
        if (book.getAvailableCopies() > 0){
-           rentalService.createRental(user,book);
+           rentalService.createRental(user.getId(),book.getId());
 
            book.setAvailableCopies(book.getAvailableCopies() - 1);
 
@@ -111,23 +111,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book returnBook(String bookId, String userId) {
-       Book book = getById(bookId);
-       User user = userService.getById(userId);
+        Book book = getById(bookId);
+        User user = userService.getById(userId);
+        Rental rental = rentalService.getRentalByUserAndBook(user, book);
 
-       Rental rental = rentalService.getRentalByUserAndBook(user,book);
+        Rental updatedRental = rentalService.processReturn(rental);
 
-       if (rental != null && rental.getReturnDate() == null){
-           rental.setReturnDate(LocalDate.now());
-
-           rentalService.saveRental(rental);
-
-           book.setAvailableCopies(book.getAvailableCopies() + 1);
-
-           return bookRepository.save(book);
-       }else{
-           throw new IllegalArgumentException("This book is not currently rented or has already been returned.");
-       }
+        return updatedRental.getBook();
     }
+
 
     @Override
     public List<Book> searchByDescription(String keyword) {

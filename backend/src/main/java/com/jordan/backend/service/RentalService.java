@@ -6,10 +6,13 @@ import com.jordan.backend.model.User;
 
 public interface RentalService {
 
-    Rental createRental (User user, Book book);
+    public Rental createRental(String userId, String bookId);
 
     Rental getRentalByUserAndBook(User user, Book book);
 
     Rental saveRental(Rental rental);
 
+    Rental returnBook(String rentalId);
+
+    Rental processReturn(Rental rental);
 }

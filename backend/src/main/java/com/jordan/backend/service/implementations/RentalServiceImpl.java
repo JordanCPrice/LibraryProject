@@ -3,20 +3,41 @@ package com.jordan.backend.service.implementations;
 import com.jordan.backend.model.Book;
 import com.jordan.backend.model.Rental;
 import com.jordan.backend.model.User;
+import com.jordan.backend.repository.BookRepository;
 import com.jordan.backend.repository.RentalRepository;
+import com.jordan.backend.repository.UserRepository;
 import com.jordan.backend.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class RentalServiceImpl implements RentalService {
 
+    private final RentalRepository rentalRepository;
+    private final UserRepository userRepository;
+    private final BookRepository bookRepository;
+
     @Autowired
-    private RentalRepository rentalRepository;
+    public RentalServiceImpl(RentalRepository rentalRepository, UserRepository userRepository, BookRepository bookRepository){
+        this.rentalRepository = rentalRepository;
+        this.userRepository = userRepository;
+        this.bookRepository = bookRepository;
+    }
 
     @Override
-    public Rental createRental(User user, Book book) {
-        Rental rental = new Rental(user, book);
+    public Rental createRental(String userId, String bookId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("No user found with ID: " +userId));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new IllegalArgumentException("No book found with ID: " +bookId));
+
+
+        if (book.getAvailableCopies() <= 0){
+            throw new IllegalArgumentException("No available copies of the book.");
+        }
+        Rental rental = new Rental(user,book);
+        book.setAvailableCopies(book.getAvailableCopies() - 1);
+        bookRepository.save(book);
         return rentalRepository.save(rental);
     }
 
@@ -28,5 +49,30 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public Rental saveRental(Rental rental) {
         return rentalRepository.save(rental);
+    }
+
+    @Override
+    public Rental returnBook(String rentalId) {
+        Rental rental = rentalRepository.findById(rentalId).orElseThrow(() -> new IllegalArgumentException("Rental not found with ID: " + rentalId));
+        return processReturn(rental);
+    }
+    @Override
+    public Rental processReturn(Rental rental) {
+        if (rental == null) {
+            throw new IllegalArgumentException("Rental not found.");
+        }
+
+        if (rental.getReturnDate() != null) {
+            throw new IllegalArgumentException("Book has already been returned.");
+        }
+        rental.setReturnDate(LocalDate.now());
+
+        Book book = bookRepository.findById(rental.getBook().getId()).orElseThrow(() -> new IllegalArgumentException("Book not found."));
+
+        book.setAvailableCopies(book.getAvailableCopies() + 1);
+        bookRepository.save(book);
+
+        return rentalRepository.save(rental);
+
     }
 }

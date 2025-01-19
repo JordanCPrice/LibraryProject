@@ -15,14 +15,16 @@ import java.util.List;
 @CrossOrigin
 public class BookController {
 
+    private final BookService bookService;
+
     @Autowired
-    BookService bookService;
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @PostMapping
     public ResponseEntity<Book> addBook(@RequestBody BookRequestDTO bookRequestDTO){
-
         Book book = bookService.addBook(bookRequestDTO);
-
         return ResponseEntity.status(200).body(book);
     }
 
