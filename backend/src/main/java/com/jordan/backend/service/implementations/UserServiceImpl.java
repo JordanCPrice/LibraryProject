@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -27,7 +26,6 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsByEmail(newUser.getEmail())){
             throw new IllegalArgumentException("Email is already in use.");
         }
-
         return userRepository.save(newUser);
 
     }

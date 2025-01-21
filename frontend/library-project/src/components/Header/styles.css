@@ -36,6 +36,7 @@
     border-radius: 2rem;
     box-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 5%);
     width: 20%;
+    position: relative;
 }
 
 .search-bar:hover{
@@ -45,15 +46,15 @@
 }
 
 .search-bar-text{
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding-right: 15rem;
+
 }
 
 .search-icon-div{
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 .profile-container{
@@ -72,5 +73,24 @@
     border: 1px solid var(--gray);
     padding: 0.5rem;
     border-radius: 2rem;
+    cursor: pointer;
 }
 
+.search-input {
+    width: 100%; /* Make the input field take up the full width of the search bar */
+    border: none; /* Remove the default border */
+    outline: none; /* Remove the outline on focus */
+    background-color: transparent; /* Ensure background is transparent to match the search bar */
+    font-size: 1rem; /* Adjust font size */
+    color: black; /* Text color */
+    padding: 0; /* Remove extra padding */
+  }
+  
+  .search-input:focus {
+    box-shadow: none; /* Optionally remove the default focus box-shadow */
+  }
+  
+
+#basic-menu {
+    z-index: 1300; /* Ensure it appears above modals */
+  }

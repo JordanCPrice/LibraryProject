@@ -1,11 +1,11 @@
 import React from 'react';
 import "./styles.css";
-import Card from "./card";
+import BookCard from "./card";
 
 function Cards(){
     return (
       <div className="cards-flex">
-        <Card/>
+        <BookCard/>
 
      </div>
     );

@@ -12,7 +12,6 @@ import com.jordan.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -156,4 +155,13 @@ public class BookServiceImpl implements BookService {
                 ))
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<Book> getBooks(String query){
+        if (query != null && !query.isEmpty()) {
+            return bookRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, query);
+        } else {
+            return bookRepository.findAll(); // Return all books if no search query is provided
+        }
+    }
+
 }

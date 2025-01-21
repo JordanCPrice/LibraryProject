@@ -20,4 +20,6 @@ public interface BookRepository extends MongoRepository<Book, String> {
     @Query("{ 'description' : { $regex: ?0, $options: 'i' } }")
     List<Book> findByDescriptionContainingIgnoreCase(String keyword);
 
+    List<Book> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String author, String description);
+
 }

@@ -33,5 +33,7 @@ public interface BookService {
 
     List<BookResponseDTO> getAllBooks();
 
+    List<Book> getBooks(String query);
+
 
 }
