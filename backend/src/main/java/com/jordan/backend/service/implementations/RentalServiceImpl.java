@@ -1,5 +1,6 @@
 package com.jordan.backend.service.implementations;
 
+import com.jordan.backend.dto.RentalDTO;
 import com.jordan.backend.model.Book;
 import com.jordan.backend.model.Rental;
 import com.jordan.backend.model.User;
@@ -11,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RentalServiceImpl implements RentalService {
@@ -65,7 +69,7 @@ public class RentalServiceImpl implements RentalService {
         if (rental.getReturnDate() != null) {
             throw new IllegalArgumentException("Book has already been returned.");
         }
-        rental.setReturnDate(LocalDate.now());
+        rental.setReturnDate(LocalDate.now().format(DateTimeFormatter.ISO_DATE));
 
         Book book = bookRepository.findById(rental.getBook().getId()).orElseThrow(() -> new IllegalArgumentException("Book not found."));
 
@@ -74,5 +78,23 @@ public class RentalServiceImpl implements RentalService {
 
         return rentalRepository.save(rental);
 
+    }
+
+    @Override
+    public List<RentalDTO> getRentalsByUserId(String userId) {
+        // Validate if user exists
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("No user found with ID: " + userId));
+
+        // Fetch rentals and map to DTOs
+        return rentalRepository.findByUserId(userId).stream()
+                .map(rental -> new RentalDTO(
+                        rental.getRentalId(),
+                        rental.getUser().getId(),
+                        rental.getBook().getId(),
+                        rental.getBook().getTitle(),
+                        rental.getRentalDate(),  // Rental date is already a String
+                        rental.getReturnDate())) // Return date is already a String
+                .collect(Collectors.toList());
     }
 }

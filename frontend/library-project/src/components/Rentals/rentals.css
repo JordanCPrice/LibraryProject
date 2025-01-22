@@ -1,0 +1,68 @@
+/* Rentals.css */
+
+/* Wrapper for the entire component */
+.rentals {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Header styles */
+  .rentals h1 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .rentals-section {
+    margin-bottom: 30px;
+  }
+  
+  .rentals-section h2 {
+    font-size: 1.5rem;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
+  /* Table styling */
+  .rentals-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .rentals-table th,
+  .rentals-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .rentals-table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .rentals-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .rentals-table tr:hover {
+    background-color: #eaeaea;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    color: red;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  /* Empty state message */
+  p {
+    font-size: 1.1rem;
+    color: #555;
+    text-align: center;
+  }
+  

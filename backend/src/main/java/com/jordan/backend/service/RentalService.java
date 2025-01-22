@@ -1,8 +1,11 @@
 package com.jordan.backend.service;
 
+import com.jordan.backend.dto.RentalDTO;
 import com.jordan.backend.model.Book;
 import com.jordan.backend.model.Rental;
 import com.jordan.backend.model.User;
+
+import java.util.List;
 
 public interface RentalService {
 
@@ -15,4 +18,6 @@ public interface RentalService {
     Rental returnBook(String rentalId);
 
     Rental processReturn(Rental rental);
+
+    List<RentalDTO> getRentalsByUserId(String userId);
 }

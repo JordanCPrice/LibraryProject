@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Document(collection = "rentals")
 public class Rental {
@@ -18,9 +19,9 @@ public class Rental {
     @DBRef
     private Book book;
 
-    private LocalDate rentalDate;
+    private String rentalDate;
 
-    private LocalDate returnDate;
+    private String returnDate;
 
     public Rental() {
     }
@@ -28,7 +29,7 @@ public class Rental {
     public Rental(User user, Book book) {
         this.user = user;
         this.book = book;
-        this.rentalDate = LocalDate.now();
+        this.rentalDate = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
         this.returnDate = null;
     }
 
@@ -56,19 +57,19 @@ public class Rental {
         this.book = book;
     }
 
-    public LocalDate getRentalDate() {
-        return rentalDate;
+    public String getRentalDate() {
+        return rentalDate; // Directly return the String
     }
 
-    public void setRentalDate(LocalDate rentalDate) {
+    public void setRentalDate(String rentalDate) {
         this.rentalDate = rentalDate;
     }
 
-    public LocalDate getReturnDate() {
-        return returnDate;
+    public String getReturnDate() {
+        return returnDate; // Directly return the String
     }
 
-    public void setReturnDate(LocalDate returnDate) {
+    public void setReturnDate(String returnDate) {
         this.returnDate = returnDate;
     }
 

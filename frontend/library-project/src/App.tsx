@@ -7,6 +7,7 @@ import RegisterModal from './components/Header/RegisterModal';
 import LoginModal from './components/Header/LoginModal';
 import { UserProvider } from './globalData/UserContext';
 import { useState } from 'react';
+import Rentals from "./components/Rentals/Rentals";
 
 function App() {
   const [query, setQuery] = useState(''); // Declare state for the search query
@@ -22,13 +23,12 @@ function App() {
           <Header query={query} onSearchChange={handleSearchChange} />
           <BookCards query={query} /> {/* Pass query to BookCards */}
           <Routes>
+          <Route path="/rentals" element={<Rentals />} />
             <Route
-              path="/register"
-              element={<RegisterModal open={true} onClose={() => window.history.back()} />}
+              path="/register" element={<RegisterModal open={true} onClose={() => window.history.back()} />}
             />
             <Route
-              path="/login"
-              element={<LoginModal open={true} onClose={() => window.history.back()} />}
+              path="/login" element={<LoginModal open={true} onClose={() => window.history.back()} />}
             />
           </Routes>
         </div>

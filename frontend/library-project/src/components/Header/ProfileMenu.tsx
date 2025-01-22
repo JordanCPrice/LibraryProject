@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -16,6 +17,7 @@ export default function BasicMenu() {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   const { loggedInUser, setLoggedInUser } = useUser(); // Get loggedInUser from context
+  const navigate = useNavigate(); // React Router hook for navigation
 
   const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
@@ -39,6 +41,11 @@ export default function BasicMenu() {
     setLoggedInUser({ userId: 0, email: "" }); // Clear user info in context
     localStorage.removeItem("loggedInUser"); // Remove user from localStorage
     handleMenuClose();
+  };
+
+  const handleMyRentals = () => {
+    handleMenuClose(); // Close the menu
+    navigate("/rentals"); // Navigate to the Rentals page
   };
 
   return (
@@ -71,7 +78,7 @@ export default function BasicMenu() {
         ) : (
           <>
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My Rentals</MenuItem>
+            <MenuItem onClick={handleMyRentals}>My Rentals</MenuItem> {/* Navigate to Rentals */}
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </>
         )}
