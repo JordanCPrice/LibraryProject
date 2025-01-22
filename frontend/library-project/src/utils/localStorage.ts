@@ -6,7 +6,7 @@ export const saveUserToLocalStorage = (user: any) => {
 
 export const getUserFromLocalStorage = () => {
   const storedUser = localStorage.getItem(LOCAL_STORAGE_KEY);
-  return storedUser ? JSON.parse(storedUser) : { userId: 0, email: "" };
+  return storedUser ? JSON.parse(storedUser) : null; // Return null if no user found
 };
 
 export const clearUserFromLocalStorage = () => {

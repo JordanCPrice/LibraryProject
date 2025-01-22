@@ -1,4 +1,3 @@
-// App.tsx
 import './App.css';
 import Header from "./components/Header";
 import BookCards from "./components/Cards";
@@ -8,30 +7,50 @@ import LoginModal from './components/Header/LoginModal';
 import { UserProvider } from './globalData/UserContext';
 import { useState } from 'react';
 import Rentals from "./components/Rentals/Rentals";
+import Home from "./components/Home/home";
 
 function App() {
-  const [query, setQuery] = useState(''); // Declare state for the search query
+  const [query, setQuery] = useState('');
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
   const handleSearchChange = (query: string) => {
-    setQuery(query); // Update the query state when the search bar changes
+    setQuery(query);
   };
 
   return (
     <UserProvider>
       <BrowserRouter>
         <div className="app-container">
+          {/* Render the header */}
           <Header query={query} onSearchChange={handleSearchChange} />
-          <BookCards query={query} /> {/* Pass query to BookCards */}
+
+          {/* Define application routes */}
           <Routes>
-          <Route path="/rentals" element={<Rentals />} />
+            {/* Home route */}
+            <Route path="/" element={<Home />} />
+
+            {/* Catalog route */}
+            <Route path="/catalog" element={<BookCards query={query} />} />
+
+            {/* Rentals route */}
+            <Route path="/rentals" element={<Rentals />} />
+
+            {/* Login route */}
             <Route
-              path="/register" element={<RegisterModal open={true} onClose={() => window.history.back()} />}
-            />
-            <Route
-              path="/login" element={<LoginModal open={true} onClose={() => window.history.back()} />}
+              path="/login"
+              element={<LoginModal open={true} onClose={() => setIsLoginModalOpen(false)} />}
             />
           </Routes>
         </div>
+
+        {/* Modals controlled by state */}
+        {isLoginModalOpen && (
+          <LoginModal open={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+        )}
+        {isRegisterModalOpen && (
+          <RegisterModal open={isRegisterModalOpen} onClose={() => setIsRegisterModalOpen(false)} />
+        )}
       </BrowserRouter>
     </UserProvider>
   );

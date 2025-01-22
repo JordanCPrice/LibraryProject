@@ -34,6 +34,11 @@ const Rentals: React.FC = () => {
         const response = await axios.get<Rental[]>(`http://localhost:7777/rentals/user/${userId}`);
         const rentals = response.data;
 
+        // Log the rental dates before any manipulation
+        rentals.forEach((rental) => {
+          console.log(`Rental Date for ${rental.rentalId}:`, rental.rentalDate);
+        });
+
         // Separate active and completed rentals
         const active = rentals.filter((rental) => rental.returnDate === null);
         const completed = rentals.filter((rental) => rental.returnDate !== null);
@@ -52,7 +57,35 @@ const Rentals: React.FC = () => {
   // Function to handle date formatting (parse as UTC)
   const formatDate = (dateString: string) => {
     const date = new Date(dateString); // JavaScript can handle 'yyyy-MM-dd' strings directly
-    return date.toLocaleDateString(); // Display the date in the local time zone
+
+    // Adjust the date to UTC before formatting to avoid timezone issues
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Month is 0-based
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    
+    // Format the date to 'YYYY-MM-DD'
+    return `${year}-${month}-${day}`;
+  };
+
+  // Handle returning a book
+  const returnBook = async (rentalId: string) => {
+    try {
+      const response = await axios.put(`http://localhost:7777/return/${rentalId}`);
+      if (response.status === 200) {
+        // Update the rental state after successful return
+        setActiveRentals(activeRentals.filter((rental) => rental.rentalId !== rentalId));
+        setCompletedRentals([
+          ...completedRentals,
+          {
+            ...activeRentals.find((rental) => rental.rentalId === rentalId)!,
+            returnDate: new Date().toISOString(),
+          },
+        ]);
+      }
+    } catch (err) {
+      setError("Failed to return the book. Please try again later.");
+      console.error(err);
+    }
   };
 
   if (error) {
@@ -71,6 +104,7 @@ const Rentals: React.FC = () => {
               <tr>
                 <th>Book Title</th>
                 <th>Rental Date</th>
+                <th>Return Book</th>
               </tr>
             </thead>
             <tbody>
@@ -78,6 +112,9 @@ const Rentals: React.FC = () => {
                 <tr key={rental.rentalId}>
                   <td>{rental.bookTitle}</td>
                   <td>{formatDate(rental.rentalDate)}</td>
+                  <td>
+                    <button className="return-button" onClick={() => returnBook(rental.rentalId)}>Return</button>
+                  </td>
                 </tr>
               ))}
             </tbody>

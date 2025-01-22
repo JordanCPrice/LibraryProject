@@ -3,11 +3,11 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import "./Modal.css"; // Import modal styles
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Alert, Snackbar } from "@mui/material";
-import { useUser } from "../../globalData/UserContext"; // Import the context hook
+import { useUser } from "../../globalData/UserContext"; // Adjust import path if needed
+import "./Modal.css"; // Import modal styles
 
 const LoginModal = ({ open, onClose }) => {
   const [email, setEmail] = useState("");
@@ -19,7 +19,6 @@ const LoginModal = ({ open, onClose }) => {
   const { setLoggedInUser } = useUser(); // Access context function to set user
 
   const handleSubmit = async () => {
-    // Logic for handling login here
     const user = {
       email,
       password,
@@ -30,7 +29,7 @@ const LoginModal = ({ open, onClose }) => {
 
       if (response.status === 200) {
         // Assuming the response returns user info (adjust as needed)
-        const loggedInUser = response.data; 
+        const loggedInUser = response.data;
         
         // Save the logged-in user in context and localStorage
         setLoggedInUser(loggedInUser);
@@ -39,9 +38,7 @@ const LoginModal = ({ open, onClose }) => {
         localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
 
         setOpenSnackbar(true);
-
         navigate("/"); // Redirect to the home page after successful login
-
         onClose(); // Close the modal
       }
     } catch (error) {
@@ -59,7 +56,7 @@ const LoginModal = ({ open, onClose }) => {
   return (
     <>
       <Modal open={open} onClose={handleClose}>
-        <Box className="modal-box"> {/* Apply modal-box class */}
+        <Box className="modal-box">
           <h2>Login</h2>
           <TextField
             label="Email"

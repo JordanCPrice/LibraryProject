@@ -40,7 +40,8 @@ export default function BasicMenu() {
   const handleLogout = () => {
     setLoggedInUser({ userId: 0, email: "" }); // Clear user info in context
     localStorage.removeItem("loggedInUser"); // Remove user from localStorage
-    handleMenuClose();
+    navigate("/"); // Navigate to the home page after logout
+    handleMenuClose(); // Close the menu
   };
 
   const handleMyRentals = () => {
@@ -70,16 +71,17 @@ export default function BasicMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        {!loggedInUser.email ? ( // Check if loggedInUser has a valid email
-          <>
-            <MenuItem onClick={handleLoginModalOpen}>Login</MenuItem>
-            <MenuItem onClick={handleRegisterModalOpen}>Sign Up</MenuItem>
-          </>
-        ) : (
+        {/* Ensure loggedInUser is not null or undefined before accessing email */}
+        {loggedInUser && loggedInUser.email ? (
           <>
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMyRentals}>My Rentals</MenuItem> {/* Navigate to Rentals */}
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </>
+        ) : (
+          <>
+            <MenuItem onClick={handleLoginModalOpen}>Login</MenuItem>
+            <MenuItem onClick={handleRegisterModalOpen}>Sign Up</MenuItem>
           </>
         )}
       </Menu>

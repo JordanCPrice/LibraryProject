@@ -1,0 +1,24 @@
+.home-container {
+    text-align: center;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .home-buttons {
+    margin-top: 2rem;
+  }
+  
+  .nav-button {
+    margin: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .nav-button:hover {
+    background-color: #0056b3;
+  }
+  

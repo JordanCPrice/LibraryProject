@@ -1,6 +1,7 @@
 package com.jordan.backend.controller;
 
 import com.jordan.backend.dto.RentalDTO;
+import com.jordan.backend.dto.RentalRequestDTO;
 import com.jordan.backend.model.Rental;
 import com.jordan.backend.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+
 public class RentalController {
 
     private final RentalService rentalService;
@@ -21,13 +23,13 @@ public class RentalController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Rental> createRental(@RequestParam String userId, @RequestParam String bookId){
-        Rental rental = rentalService.createRental(userId, bookId);
+    public ResponseEntity<Rental> createRental(@RequestBody RentalRequestDTO rentalRequestDTO){
+        Rental rental = rentalService.createRental(rentalRequestDTO.getUserId(), rentalRequestDTO.getBookId());
         return ResponseEntity.status(201).body(rental);
     }
 
-    @PostMapping("/return")
-    public ResponseEntity<Rental> returnBook(@RequestParam String rentalId) {
+    @PutMapping("/return/{rentalId}")
+    public ResponseEntity<Rental> returnBook(@PathVariable String rentalId) {
         Rental returnedRental = rentalService.returnBook(rentalId);
         return ResponseEntity.ok(returnedRental);
     }
