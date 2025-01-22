@@ -1,38 +1,35 @@
-// Header.tsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo/library-book-image.png";
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import BasicMenu from "./ProfileMenu";
+import { FaHome } from "react-icons/fa"; // Import a home icon from react-icons
 import "./styles.css";
 
-interface HeaderProps {
-  query: string;
-  onSearchChange: (query: string) => void;
-}
+const Header: React.FC = () => {
+  const navigate = useNavigate();
 
-const Header: React.FC<HeaderProps> = ({ query, onSearchChange }) => {
+  const handleDonateButtonClick = () => {
+    navigate("/donate"); // Navigate to the donation page
+  };
+
+  const handleHomeClick = () => {
+    navigate("/"); // Navigate to the home page
+  };
+
   return (
     <div className="navbar">
       <div className="logo-container">
         <img src={logo} alt="library-book-image" className="navbar-logo" />
         <span className="navbar-text">Jordan's Library</span>
       </div>
-      
-      <div className="search-bar">
-        <div className="search-bar-text"></div>
-        <input
-          type="text"
-          value={query} // Bind value to query state
-          onChange={(e) => onSearchChange(e.target.value)}  // Notify parent on search change
-          className="search-input"
-          placeholder="Search books..."
-        />
-        <div className="search-icon-div">
-          <SearchRoundedIcon className="search-icon" />
-        </div>
+      <div className="center-container">
+        <button className="header-button" onClick={handleDonateButtonClick}>
+          Have a book you'd like to donate? Click here!
+        </button>
       </div>
-
       <div className="profile-container">
+        {/* Home Icon */}
+        <FaHome className="home-icon" onClick={handleHomeClick} />
         <BasicMenu />
       </div>
     </div>

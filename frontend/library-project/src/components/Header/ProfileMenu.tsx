@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -7,7 +7,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import Button from "@mui/material/Button";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
-import { useUser } from "../../globalData/UserContext"; // Import the useUser hook
+import { useUser } from "../../globalData/UserContext";
 import "./styles.css";
 
 export default function BasicMenu() {
@@ -41,12 +41,18 @@ export default function BasicMenu() {
     setLoggedInUser({ userId: 0, email: "" }); // Clear user info in context
     localStorage.removeItem("loggedInUser"); // Remove user from localStorage
     navigate("/"); // Navigate to the home page after logout
-    handleMenuClose(); // Close the menu
+    handleMenuClose();
+    setIsLoginModalOpen(false); // Close the login modal
   };
 
   const handleMyRentals = () => {
-    handleMenuClose(); // Close the menu
-    navigate("/rentals"); // Navigate to the Rentals page
+    handleMenuClose();
+    navigate("/rentals");
+  };
+
+  const handleProfileClick = () => {
+    handleMenuClose();
+    navigate("/profile");
   };
 
   return (
@@ -59,8 +65,8 @@ export default function BasicMenu() {
         onClick={handleMenuClick}
         className="profile-menu-flex"
       >
-        <MenuRoundedIcon />
-        <AccountCircleRoundedIcon />
+        <MenuRoundedIcon className="menu-icon" />
+        <AccountCircleRoundedIcon className="account-icon" />
       </div>
       <Menu
         id="basic-menu"
@@ -71,11 +77,10 @@ export default function BasicMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        {/* Ensure loggedInUser is not null or undefined before accessing email */}
         {loggedInUser && loggedInUser.email ? (
           <>
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMyRentals}>My Rentals</MenuItem> {/* Navigate to Rentals */}
+            <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+            <MenuItem onClick={handleMyRentals}>My Rentals</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </>
         ) : (
@@ -90,16 +95,23 @@ export default function BasicMenu() {
       <LoginModal
         open={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
-        resetForm={() => {
+        onSwitchToRegister={() => {
           setIsLoginModalOpen(false);
+          setIsRegisterModalOpen(true);
         }}
       />
 
       <RegisterModal
         open={isRegisterModalOpen}
         onClose={() => setIsRegisterModalOpen(false)}
-        resetForm={() => {
+        onSwitchToLogin={() => {
           setIsRegisterModalOpen(false);
+          setIsLoginModalOpen(true);
+        }}
+        onRegistrationSuccess={() => {
+          // Open login modal after successful registration
+          setIsRegisterModalOpen(false);
+          setIsLoginModalOpen(true);
         }}
       />
     </div>

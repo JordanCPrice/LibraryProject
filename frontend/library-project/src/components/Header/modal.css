@@ -14,21 +14,11 @@
   gap: 12px;
 }
   
-.modal-button {
-  margin-top: 16px;
-  background-color: #007bff; /* Blue background by default */
-  color: white; /* White text */
-  padding: 12px 24px; /* Larger padding for a bigger button */
-  font-size: 16px; /* Larger font size */
-  width: 100%; /* Make the button take up full width of the modal */
-  border: none; /* Remove default border */
-  border-radius: 8px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition on hover */
-}
+
 
 .modal-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05);
+  background-color: #0056b3;
+  color: white;
 }
-
   

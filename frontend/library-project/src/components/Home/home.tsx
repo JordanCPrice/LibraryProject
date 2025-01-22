@@ -1,17 +1,17 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
-import { useUser } from '../../globalData/UserContext'; // Adjust the import path if needed
-import './Home.css'; // Optional: Create this file for custom styles
+import { useNavigate } from "react-router-dom";
+import { useUser } from '../../globalData/UserContext';
+import './Home.css';
 
 const Home: React.FC = () => {
   const { loggedInUser } = useUser(); // Get the logged-in user from context
-  const navigate = useNavigate(); // Use useNavigate to handle navigation
+  const navigate = useNavigate();
 
   const handleManageRentalsClick = () => {
     if (loggedInUser) {
-      navigate("/rentals"); // Navigate to rentals page if logged in
+      navigate("/rentals");
     } else {
-      navigate("/login"); // Redirect to login page if not logged in
+      navigate("/login");
     }
   };
 

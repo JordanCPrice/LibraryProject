@@ -71,7 +71,7 @@ public class RentalServiceImpl implements RentalService {
         if (rental.getReturnDate() != null) {
             throw new IllegalArgumentException("Book has already been returned.");
         }
-        
+
         rental.setReturnDate(LocalDate.now().format(DateTimeFormatter.ISO_DATE));
 
         Book book = bookRepository.findById(rental.getBook().getId()).orElseThrow(() -> new IllegalArgumentException("Book not found."));
