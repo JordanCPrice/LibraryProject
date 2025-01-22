@@ -15,6 +15,7 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 850px;
   }
   
   .card-image {
@@ -53,7 +54,7 @@
     position: absolute;
     bottom: 10px;
     left: 50%;
-    transform: translateX(100%);
+    transform: translateX(-50%);
     padding: 10px 20px;
     background-color: #0004ff;
     color: white;
@@ -74,15 +75,120 @@
     pointer-events: none;
   }
 
-.search-bar{
-  display: flex;
-    justify-content: space-between;
-    align-items: center;    
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--gray);
-    border-radius: 2rem;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 5%);
-    width: 20%;
-    position: relative;
+  .search-bar {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    gap: 1rem; /* Space between input and the button (if any) */
+    padding: 0.5rem 1rem; /* Adjust padding for better spacing */
+    border: 1px solid var(--gray); /* Border with your preferred color */
+    border-radius: 2rem; /* Rounded corners */
+    box-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 5%); /* Subtle shadow */
+    width: 50%; /* Make the width more flexible, adjust as needed */
+    max-width: 600px; /* Max width for responsiveness */
+    margin: 0 auto; /* Center the entire search bar on the page */
+    background-color: #fff; /* Background color for the search bar */
+    margin-bottom: 20px;
+  }
+  
+  .search-input {
+    width: 100%; /* Make the input take up the full width of the container */
+    padding: 0.8rem; /* Increase padding for better user experience */
+    font-size: 1rem; /* Adjust the font size */
+    border: 1px solid #ccc; /* Subtle border color */
+    border-radius: 1rem; /* Rounded corners for the input field */
+  }
+  
+  .search-bar input {
+    flex-grow: 1; /* Allow the input field to grow to fill available space */
+    font-size: 1rem;
+  }
+
+/* Modal Overlay (background) */
+.modal-overlay {
+  position: fixed; /* Fixed position so it stays in place when scrolling */
+  top: 0; /* Cover the entire screen */
+  left: 0; /* Cover the entire screen */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+  z-index: 9998; /* Ensure it is below the modal content */
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal Content */
+.modal {
+  position: absolute; /* Centered on the screen */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the modal */
+  background: white; /* White background for modal content */
+  padding: 20px;
+  border-radius: 8px; /* Rounded corners */
+  z-index: 9999; /* Ensure it's above the overlay */
+  width: 80%; /* Adjust size as necessary */
+  max-width: 500px; /* Max width */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for 3D effect */
+  display: none; /* Hidden by default */
+  opacity: 0; /* Initially invisible */
+  transition: opacity 0.3s ease-in-out; /* Smooth fade-in effect */
+}
+
+/* When modal is visible */
+.modal.show {
+  display: block;
+  opacity: 1; /* Fade in the modal */
+}
+
+/* Close Button */
+.modal .close-btn {
+  position: absolute; /* Position it at the top right */
+  top: 10px;
+  right: 10px;
+  background: none; /* No background */
+  border: none;
+  font-size: 20px;
+  color: #333; /* Dark color for the close button */
+  cursor: pointer; /* Change cursor to indicate it's clickable */
+}
+
+/* Optional: Hover effect for close button */
+.modal .close-btn:hover {
+  color: red; /* Change color on hover */
+}
+
+.modal-overlay.show {
+  display: flex; /* Ensure it displays the modal */
+}
+
+.modal.show {
+  display: block;
+  opacity: 1; /* Fade in */
+}
+
+/* Make the selector more specific */
+.modal .no-button {
+  background-color: #f44336; /* Red background */
+  color: white; /* White text */
+}
+
+.modal .no-button:hover {
+  background-color: #e53935; /* Darker red on hover */
+}
+
+.error-message {
+  background-color: #ff4c4c; /* Slightly lighter red */
+  color: white !important;  /* Ensure the text is white */
+  padding: 10px;  /* Keep the padding for height */
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 14px;  /* Reduced font size */
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2); /* Optional shadow to improve visibility */
+  max-width: 25%;  /* Adjust this percentage to control the width */
+  margin-left: auto;
+  margin-right: auto;
 }
