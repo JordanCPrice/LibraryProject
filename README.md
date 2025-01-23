@@ -1,0 +1,1 @@
+This project is a library management system designed to demonstrate the rental and return of library books. It features a React-based front end, a Spring Boot back end, and a MongoDB database for efficient data management. The project is hosted locally for demonstration purposes.
