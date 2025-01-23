@@ -8,4 +8,9 @@ public interface UserService {
 
     User register(User newUser);
 
+    User findUserByEmail(String email);
+
+    User updateUserProfile(String email, User updatedProfile);
+
+    User changePassword(String email, String currentPassword, String newPassword, String confirmPassword);
 }

@@ -1,53 +1,50 @@
 .profile-page .button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px; 
-  }
-  
-  .profile-page button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .profile-page button:hover {
-    background-color: #0056b3;
-  }
-  
-  .profile-page button:active {
-    background-color: #003f8c;
-    transform: translateY(0);
-  }
-  
-  .profile-page button:disabled {
-    background-color: #c0c0c0;
-    cursor: not-allowed;
-  }
-  
-  .profile-page .password-error {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; 
+}
 
-  .profile-page .edit-profile-btn,
-  .profile-page .change-password-section {
-    margin-top: 20px;
-  }
-  
- 
-  .profile-page button {
-    margin-right: 10px;
-  }
-  
-  .profile-page .change-password-form {
-    margin-top: 20px;
-  }
-  
+.profile-page button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.profile-page button:hover {
+  background-color: #0056b3;
+}
+
+.profile-page button:active {
+  background-color: #003f8c;
+  transform: translateY(0);
+}
+
+.profile-page button:disabled {
+  background-color: #c0c0c0;
+  cursor: not-allowed;
+}
+
+.profile-page .password-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.profile-page .edit-profile-btn,
+.profile-page .change-password-section {
+  margin-top: 20px;
+}
+
+.profile-page button {
+  margin-right: 10px;
+}
+
+.profile-page .change-password-form {
+  margin-top: 20px;
+}

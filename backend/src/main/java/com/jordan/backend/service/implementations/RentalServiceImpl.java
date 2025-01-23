@@ -96,8 +96,8 @@ public class RentalServiceImpl implements RentalService {
                         rental.getUser().getId(),
                         rental.getBook().getId(),
                         rental.getBook().getTitle(),
-                        rental.getRentalDate(),  // Rental date is already a String
-                        rental.getReturnDate())) // Return date is already a String
+                        rental.getRentalDate(),
+                        rental.getReturnDate()))
                 .collect(Collectors.toList());
     }
 }

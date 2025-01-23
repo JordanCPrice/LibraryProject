@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import Button from "@mui/material/Button";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import { useUser } from "../../globalData/UserContext";
@@ -18,6 +17,15 @@ export default function BasicMenu() {
 
   const { loggedInUser, setLoggedInUser } = useUser(); // Get loggedInUser from context
   const navigate = useNavigate(); // React Router hook for navigation
+  const location = useLocation(); // React Router hook to get the current location
+
+  // Ensure modals remain open when the route changes to /login
+  useEffect(() => {
+    if (location.pathname === "/login") {
+      setIsLoginModalOpen(true);
+      setIsRegisterModalOpen(false); // Close register modal if open
+    }
+  }, [location.pathname]); // Trigger only on route changes
 
   const handleMenuClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
@@ -29,12 +37,19 @@ export default function BasicMenu() {
 
   const handleLoginModalOpen = () => {
     setIsLoginModalOpen(true);
+    setIsRegisterModalOpen(false); // Close register modal
     handleMenuClose();
   };
 
   const handleRegisterModalOpen = () => {
     setIsRegisterModalOpen(true);
+    setIsLoginModalOpen(false); // Close login modal
     handleMenuClose();
+  };
+
+  const handleSwitchToRegister = () => {
+    setIsLoginModalOpen(false);
+    setIsRegisterModalOpen(true);
   };
 
   const handleLogout = () => {
@@ -95,10 +110,7 @@ export default function BasicMenu() {
       <LoginModal
         open={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
-        onSwitchToRegister={() => {
-          setIsLoginModalOpen(false);
-          setIsRegisterModalOpen(true);
-        }}
+        onSwitchToRegister={handleSwitchToRegister}
       />
 
       <RegisterModal
@@ -109,7 +121,6 @@ export default function BasicMenu() {
           setIsLoginModalOpen(true);
         }}
         onRegistrationSuccess={() => {
-          // Open login modal after successful registration
           setIsRegisterModalOpen(false);
           setIsLoginModalOpen(true);
         }}

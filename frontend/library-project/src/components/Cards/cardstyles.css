@@ -163,6 +163,10 @@
   display: flex; 
 }
 
+.modal-overlay.hidden {
+  display: none; 
+}
+
 .modal.show {
   display: block;
   opacity: 1; 

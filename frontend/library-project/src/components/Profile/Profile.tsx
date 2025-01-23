@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Snackbar, Button } from "@mui/material";
 import "./Profile.css";
 
 interface UserProfile {
@@ -10,7 +11,6 @@ interface UserProfile {
 
 const Profile: React.FC = () => {
   const [profileData, setProfileData] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const [isEditing, setIsEditing] = useState<boolean>(false); // Track if in edit mode
@@ -25,6 +25,8 @@ const Profile: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [showChangePassword, setShowChangePassword] = useState<boolean>(false); // Track if password change section is shown
+
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false); // Snackbar visibility
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem("loggedInUser");
@@ -41,10 +43,8 @@ const Profile: React.FC = () => {
         lastName: user.lastName,
         email: user.email,
       });
-      setLoading(false);
     } else {
       setError("You are not logged in.");
-      setLoading(false);
     }
   }, []);
 
@@ -60,11 +60,29 @@ const Profile: React.FC = () => {
   };
 
   const handleSave = () => {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+      setError("User is not logged in.");
+      return;
+    }
+
+    const parsedUser = JSON.parse(loggedInUser);
+    const updatedUser = {
+      ...updatedProfile,
+      id: parsedUser.id,  // Include the userId in the updated data
+    };
+
     axios
-      .put(`http://localhost:7777/users/${profileData?.email}`, updatedProfile)
+      .put(`http://localhost:7777/users/${profileData?.email}`, updatedUser)
       .then((response) => {
-        setProfileData(updatedProfile); // Update state with the new data
-        setIsEditing(false); // Exit edit mode
+        // Update the profile state
+        setProfileData(updatedProfile);
+
+        // Update the loggedInUser in localStorage with the new profile data including userId
+        localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+
+        // Exit edit mode
+        setIsEditing(false);
       })
       .catch((error) => {
         console.error("Error updating profile:", error);
@@ -78,31 +96,36 @@ const Profile: React.FC = () => {
       return;
     }
 
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+      setError("User is not logged in.");
+      return;
+    }
+
+    const parsedUser = JSON.parse(loggedInUser);
+
     axios
-      .put(`http://localhost:7777/users/${profileData?.email}/change-password`, {
+      .put(`http://localhost:7777/users/${parsedUser.email}/change-password`, {
         currentPassword,
         newPassword,
+        confirmPassword,
       })
       .then((response) => {
-        alert("Password changed successfully");
+        setOpenSnackbar(true); // Show Snackbar on successful password change
         setCurrentPassword("");
         setNewPassword("");
         setConfirmPassword("");
-        setShowChangePassword(false); // Hide password change fields after successful change
+        setShowChangePassword(false);
       })
       .catch((error) => {
-        console.error("Error changing password:", error);
-        setPasswordError("There was an error changing your password.");
+        console.error("Error changing password:", error.response?.data || error.message);
+        setPasswordError(error.response?.data?.message || "There was an error changing your password.");
       });
   };
 
   const toggleChangePasswordSection = () => {
     setShowChangePassword(!showChangePassword); // Toggle visibility of the change password section
   };
-
-  if (loading) {
-    return <p>Loading your profile...</p>;
-  }
 
   if (error) {
     return <div className="error-message">{error}</div>;
@@ -174,6 +197,14 @@ const Profile: React.FC = () => {
           <button onClick={handleChangePassword}>Change Password</button>
         </div>
       )}
+
+      {/* Snackbar for successful password change */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message="Password changed successfully"
+      />
     </div>
   );
 };

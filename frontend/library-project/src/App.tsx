@@ -26,9 +26,6 @@ function App() {
             <Route path="/catalog" element={<BookCards />} />
             <Route path="/rentals" element={<Rentals />} />
             <Route path="/donate" element={<Donation />} />
-            <Route
-              path="/login"element={<LoginModal open={true} onClose={() => setIsLoginModalOpen(false)} />}
-            />
           </Routes>
         </div>
 

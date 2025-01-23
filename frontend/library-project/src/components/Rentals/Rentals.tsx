@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "./modal";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./rentals.css";
 
 interface Rental {
@@ -18,6 +19,8 @@ const Rentals: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedRental, setSelectedRental] = useState<Rental | null>(null);
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const fetchRentals = async () => {
     try {
@@ -86,6 +89,11 @@ const Rentals: React.FC = () => {
     setSelectedRental(null);
   };
 
+  // Navigate back to catalog page
+  const handleBackToCatalog = () => {
+    navigate("/catalog");  // Adjust the path to your catalog route
+  };
+
   if (error) {
     return <div className="error-message">{error}</div>;
   }
@@ -93,6 +101,11 @@ const Rentals: React.FC = () => {
   return (
     <div className="rentals">
       <h1>My Rentals</h1>
+
+      {/* Button to navigate back to catalog */}
+      <button className="back-button" onClick={handleBackToCatalog}>
+        Go to Catalog
+      </button>
 
       <div className="rentals-section">
         <h2>Active Rentals</h2>

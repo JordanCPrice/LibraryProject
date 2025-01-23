@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./styles.css";
+import { useNavigate } from "react-router-dom";
+import "./cardstyles.css";
 import Modal from "./modal";
 
-// Define a type for the Book data structure with `bookId`
 interface Book {
   bookId: string;
   title: string;
@@ -16,14 +16,12 @@ interface Book {
 function BookCards() {
   const [books, setBooks] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>(""); 
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);  // Confirmation modal state
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-
-  // State to trigger re-fetch of books
   const [refreshBooks, setRefreshBooks] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Error message state
 
-  // State for error message
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -38,7 +36,7 @@ function BookCards() {
       .catch((error) => {
         console.error("There was an error fetching the books!", error);
       });
-  }, [refreshBooks]); 
+  }, [refreshBooks]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -58,16 +56,15 @@ function BookCards() {
     if (!loggedInUser) {
       setErrorMessage("You must be logged in to rent a book!");
       setTimeout(() => {
-        setErrorMessage(null); // Hide the error message after 3 seconds
-      }, 3000);
+        setErrorMessage(null); // Clear error message after 3 seconds
+        navigate("/login"); // Redirect to the login page after 3 seconds
+      }, 3000); // 3 seconds delay
       return;
     }
 
-    const user = JSON.parse(loggedInUser);
-    const loggedInUserId = user.id;
-
+    // If logged in, proceed with rent process (no need for confirmation modal)
     setSelectedBook(book);
-    setModalVisible(true);
+    setModalVisible(true); // Only show confirmation modal if the user is logged in
   };
 
   const handleConfirmRent = () => {
@@ -87,9 +84,8 @@ function BookCards() {
             console.log("Rental created successfully:", response.data);
             setModalVisible(false);
             setSelectedBook(null);
-            
-            // Trigger re-fetch of books after successful rental
-            setRefreshBooks(prev => !prev); 
+            setRefreshBooks((prev) => !prev);
+            navigate("/rentals");
           })
           .catch((error) => {
             console.error("Error creating rental:", error);
@@ -115,7 +111,7 @@ function BookCards() {
         />
       </div>
 
-      {/* Error message below the search bar */}
+      {/* Display the error message if there is one */}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
 
       <div className="book-cards-container">
@@ -139,9 +135,7 @@ function BookCards() {
                   </p>
                 </div>
                 <button
-                  className={`rent-button ${
-                    book.availableCopies === 0 ? "rent-button-disabled" : ""
-                  }`}
+                  className={`rent-button ${book.availableCopies === 0 ? "rent-button-disabled" : ""}`}
                   disabled={book.availableCopies === 0}
                   onClick={() => handleRent(book)}
                 >
@@ -155,7 +149,7 @@ function BookCards() {
         )}
       </div>
 
-      {/* Modal for confirmation */}
+      {/* Confirmation Modal */}
       {modalVisible && selectedBook && (
         <Modal
           message={`Are you sure you want to rent "${selectedBook.title}" by ${selectedBook.author}?`}

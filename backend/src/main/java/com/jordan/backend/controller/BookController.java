@@ -30,7 +30,7 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getBooks(@RequestParam(required = false) String query) {
-        List<Book> books = bookService.getBooks(query); // Get the list of books
-        return ResponseEntity.ok(books); // Return the list of books wrapped in ResponseEntity
+        List<Book> books = bookService.getBooks(query);
+        return ResponseEntity.ok(books);
     }
 }

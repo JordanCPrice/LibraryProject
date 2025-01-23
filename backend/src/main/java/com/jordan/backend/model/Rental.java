@@ -58,7 +58,7 @@ public class Rental {
     }
 
     public String getRentalDate() {
-        return rentalDate; // Directly return the String
+        return rentalDate;
     }
 
     public void setRentalDate(String rentalDate) {
@@ -66,7 +66,7 @@ public class Rental {
     }
 
     public String getReturnDate() {
-        return returnDate; // Directly return the String
+        return returnDate;
     }
 
     public void setReturnDate(String returnDate) {

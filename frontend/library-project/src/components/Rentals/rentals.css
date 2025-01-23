@@ -1,4 +1,5 @@
 .rentals {
+  position: relative;
     margin: 20px;
     font-family: Arial, sans-serif;
   }
@@ -180,4 +181,22 @@
 
 .modal .no-button:hover {
   background-color: #e53935;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
 }
